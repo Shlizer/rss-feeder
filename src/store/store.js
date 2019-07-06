@@ -1,10 +1,17 @@
 import React from "react";
+import { observable } from "mobx";
 
 export class Store {
+  @observable errorLog = {};
+
   constructor() {
-    let a = this.fetchFeed(
-      "http://crossorigin.me/http://www.hongkiat.com/blog/feed/"
-    );
+    // Init node feeder
+    ipcRenderer.send("initFeeder");
+
+    // Node error catcher
+    ipcRenderer.on("error", (event, errorMsg) => {
+      console.error("Main process error: ", errorMsg);
+    });
   }
   /**
    * THEMING

@@ -1,9 +1,3 @@
-# App packaged #
-################
-release
-main.js
-main.js.map
-
 # Compiled binary addons (http://nodejs.org/api/addons.html) #
 ##############################################################
 builds/
