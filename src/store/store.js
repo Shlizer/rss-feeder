@@ -2,45 +2,39 @@ import React from "react";
 import { observable } from "mobx";
 
 export class Store {
-  @observable errorLog = {};
+  @observable rssSources = ["https://www.hongkiat.com/blog/feed/"];
+  @observable feeds = [];
 
   constructor() {
-    // Init node feeder
-    ipcRenderer.send("initFeeder");
+    this.initFeedCatcher();
+    this.initFeeder();
+    this.initErrorCatcher();
+  }
 
-    // Node error catcher
+  /**
+   * Init node feeder catcher
+   */
+  initFeeder() {
+    ipcRenderer.on("feedData", (event, feed) => {
+      debugger;
+    });
+  }
+
+  /**
+   * Init node feeder
+   */
+  initFeeder() {
+    ipcRenderer.send("initFeeder", this.rssSources);
+  }
+
+  /**
+   * Node error catcher
+   */
+  initErrorCatcher() {
     ipcRenderer.on("error", (event, errorMsg) => {
       console.error("Main process error: ", errorMsg);
     });
   }
-  /**
-   * THEMING
-   */
-  get theme() {
-    return {
-      background: "red"
-    };
-  }
-
-  /**
-   * RSS FEEDS
-   */
-  fetchFeed = url => {
-    return fetch(url)
-      .then(result => {
-        result.text().then(htmlText => {
-          let domParser = DOMParser();
-          let document = domParser.parseFromString(htmlText, "text/html");
-          let feedUrl = document.querySelector(
-            'link[type="application/rss+xml"]'
-          );
-          debugger;
-        });
-      })
-      .catch(error => {
-        console.error("Fetch error: ", error);
-      });
-  };
 }
 
 const store = new Store();
