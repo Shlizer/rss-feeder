@@ -1,0 +1,70 @@
+{
+  "name": "rss-feeder",
+  "version": "0.1.1",
+  "description": "A simple app for getting rss feeds",
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shlizer/rss-feeder.git"
+  },
+  "homepage": "https://github.com/shlizer/rss-feeder#readme",
+  "bugs": {
+    "url": "https://github.com/shlizer/rss-feeder/issues"
+  },
+  "author": {
+    "name": "Krzysztof Hinc",
+    "email": "krzysiek.hinc+github@gmail.com",
+    "url": "https://github.com/shlizer"
+  },
+  "keywords": [
+    "app",
+    "electron",
+    "mobx",
+    "open",
+    "open-source",
+    "react",
+    "reactjs",
+    "rss",
+    "webpack"
+  ],
+  "engines": {
+    "node": ">=9.x",
+    "npm": ">=5.x",
+    "yarn": ">=1.x.x"
+  },
+  "main": "main.js",
+  "scripts": {
+    "build": "webpack --config webpack.build.config.js --mode production",
+    "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js  --mode development",
+    "package:all": "npm run build && electron-packager ./ --out=./builds --overwrite --platform=all",
+    "package:linux": "npm run build && electron-packager ./ --out=./builds --overwrite --platform=linux",
+    "package:macappstore": "npm run build && electron-packager ./ --out=./builds --overwrite --platform=mas",
+    "package:osx": "npm run build && electron-packager ./ --out=./builds --overwrite --platform=darwin",
+    "package:win": "npm run build && electron-packager ./ --out=./builds --overwrite --platform=win32",
+    "prod": "npm run build && electron --noDevServer ."
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "babili-webpack-plugin": "^0.1.2",
+    "css-loader": "^1.0.0",
+    "electron-packager": "^12.1.1",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.2",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.7"
+  },
+  "dependencies": {
+    "electron": "5.0.6",
+    "mobx": "5.11.0",
+    "mobx-react": "6.1.1",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "node-fetch": "2.6.0"
+  }
+}
