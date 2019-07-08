@@ -40,6 +40,7 @@ export class Store {
         icon: result.icon || null,
         title: feed.title,
         date: feed.isoDate || feed.pubDate,
+        link: feed.link,
         content: feed.content
       });
     }

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { Context } from "../../store";
 
-import "./element.scss";
+import "./css/element.scss";
 import { computed } from "mobx";
 
 @observer
@@ -11,6 +11,7 @@ export default class FeedElement extends React.Component {
   static contextType = Context;
   static propTypes = {
     title: PropTypes.string.isRequired,
+    link: PropTypes.string.isRequired,
     date: PropTypes.instanceOf(Date).isRequired,
     icon: PropTypes.string
   };
@@ -23,11 +24,20 @@ export default class FeedElement extends React.Component {
     );
   }
 
+  @computed get date() {
+    return this.props.date.toLocaleString();
+  }
+
   render() {
     return (
       <li className={"feed-element"}>
         {this.icon}
-        {this.props.date.toString()} -- {this.props.title}
+        <div className={"content"}>
+          <span className={"date"}>{this.date}</span>
+          <a target="blank" href={this.props.link} className={"title"}>
+            {this.props.title}
+          </a>
+        </div>
       </li>
     );
   }

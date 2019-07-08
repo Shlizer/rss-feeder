@@ -4,6 +4,7 @@ import FeedList from "./feedList";
 import Options from "./options";
 
 import "./reset.scss";
+import "./app.scss";
 
 class App extends React.Component {
   constructor(props) {
