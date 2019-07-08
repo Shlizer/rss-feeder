@@ -4,7 +4,8 @@
 const { app, ipcMain, shell, BrowserWindow } = require("electron");
 const path = require("path");
 const url = require("url");
-const { parseUrl } = require("./srv/feeder");
+const { parseUrl } = require("./srv/feed");
+const { setOptions, getOptions } = require("./srv/options");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -93,4 +94,15 @@ ipcMain.on("initFeeder", (event, urls) => {
   for (let i in urls) {
     parseUrl(urls[i], event);
   }
+});
+
+/**
+ * Options
+ */
+ipcMain.on("getOptions", event => {
+  event.returnValue = getOptions();
+});
+
+ipcMain.on("setOptions", (event, options) => {
+  setOptions(options);
 });

@@ -1,18 +1,21 @@
 import React from "react";
+import { Context, Store } from "../store";
+import FeedList from "./feedList";
+import Options from "./options";
 
-//const { ipcRenderer } = require("electron");
+import "./reset.scss";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.store = new Store();
+  }
   render() {
-    //let a = ipcRenderer.sendSync("getFeed");
-    debugger;
-
     return (
-      <div>
-        <h1>Electron - React - MobX Boilerplate</h1>
-
-        <p>Let's begin!</p>
-      </div>
+      <Context.Provider value={this.store}>
+        <Options />
+        <FeedList />
+      </Context.Provider>
     );
   }
 }

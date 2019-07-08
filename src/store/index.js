@@ -4,16 +4,25 @@ import { observable, computed, action } from "mobx";
 const { ipcRenderer } = require("electron");
 
 export class Store {
-  @observable rssSources = [
-    "https://www.hongkiat.com/blog/feed/",
-    "https://feeds.feedburner.com/niebezpiecznik/"
-  ];
+  @observable _options = { current: {} };
   @observable feeds = [];
 
   constructor() {
+    this.initOptions();
     this.initFeedCatcher();
     this.initFeeder();
     this.initErrorCatcher();
+  }
+
+  /**
+   *
+   */
+  initOptions() {
+    this._options.current = ipcRenderer.sendSync("getOptions");
+  }
+
+  @computed get options() {
+    return this._options.current || {};
   }
 
   /**
@@ -24,7 +33,6 @@ export class Store {
   }
 
   @action getFeed(result) {
-    debugger;
     for (let f in result.items) {
       let feed = result.items[f];
       this.feeds.push({
@@ -41,7 +49,7 @@ export class Store {
    * Init node feeder
    */
   initFeeder() {
-    ipcRenderer.send("initFeeder", this.rssSources);
+    ipcRenderer.send("initFeeder", this.options.sources || []);
   }
 
   /**
