@@ -27,10 +27,7 @@ const getOptions = () => {
 
 const setOptions = data => {
   try {
-    fs.writeFileSync(
-      "conf.json",
-      JSON.stringify(Object.assign({}, optionsDefault, data))
-    );
+    fs.writeFileSync("conf.json", JSON.stringify(Object.assign({}, optionsDefault, data)));
   } catch (error) {
     console.error("Error while saving options data");
     event.reply("error", "Error while saving options data");

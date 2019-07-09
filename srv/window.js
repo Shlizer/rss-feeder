@@ -1,5 +1,5 @@
 const url = require("url");
-const { app, ipcMain, shell, BrowserWindow, Menu } = require("electron");
+const { BrowserWindow, Menu } = require("electron");
 
 const createWindow = (OPTIONS, devMode) => {
   // Create the browser window.
@@ -16,7 +16,7 @@ const createWindow = (OPTIONS, devMode) => {
       nodeIntegration: true
     }
   });
-  mainWindow.setPosition(OPTIONS.window.position.top,OPTIONS.window.position.left);
+  mainWindow.setPosition(OPTIONS.window.position.top, OPTIONS.window.position.left);
 
   // and load the index.html of the app.
   let indexPath;
@@ -50,11 +50,11 @@ const createWindow = (OPTIONS, devMode) => {
     }
   });
 
-  mainWindow.on("closed", function() {
+  mainWindow.on("closed", function () {
     mainWindow = null;
   });
 
-  mainWindow.on("close", function() {
+  mainWindow.on("close", function () {
     OPTIONS.window.position.top = mainWindow.getPosition()[0];
     OPTIONS.window.position.left = mainWindow.getPosition()[1];
     OPTIONS.window.size.width = mainWindow.getSize()[0];

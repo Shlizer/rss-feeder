@@ -1,7 +1,7 @@
 "use strict";
 
 // Import parts of electron to use
-const { app, ipcMain, shell, BrowserWindow, Menu } = require("electron");
+const { app, ipcMain } = require("electron");
 const path = require("path");
 const { createWindow } = require("./srv/window");
 const { parseUrl } = require("./srv/feed");
@@ -13,10 +13,7 @@ const APP_OPTIONS = getOptions();
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-const DEV =
-  process.defaultApp ||
-  /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
-  /[\\/]electron[\\/]/.test(process.execPath);
+const DEV = process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath);
 
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
