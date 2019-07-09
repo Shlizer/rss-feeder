@@ -1,7 +1,7 @@
+const { ipcRenderer } = require("electron");
+
 import React from "react";
 import { observable, computed, action } from "mobx";
-
-const { ipcRenderer } = require("electron");
 
 export class Store {
   @observable opened = false;

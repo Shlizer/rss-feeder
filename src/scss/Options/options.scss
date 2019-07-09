@@ -1,0 +1,13 @@
+#app {
+  #app-options {
+    display: flex;
+    flex-direction: column;
+    transition: all ease-in-out 0.2s;
+    height: 0;
+    overflow: hidden;
+
+    &.opened {
+      height: 100%;
+    }
+  }
+}

@@ -14,7 +14,7 @@ export default class ButtonClose extends React.Component {
 
   render() {
     return this.context.isOpened ?
-      <FontAwesomeIcon id={"app-button-options"} className={"app-button"} icon={faCogs} onClick={this.onOptions} />
+      <FontAwesomeIcon id={"app-button-options"} className={"app-button opened"} icon={faCogs} onClick={this.onOptions} />
       :
       <FontAwesomeIcon id={"app-button-options"} className={"app-button"} icon={faCog} onClick={this.onOptions} />
   }

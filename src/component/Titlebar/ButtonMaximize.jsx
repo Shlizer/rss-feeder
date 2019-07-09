@@ -12,7 +12,7 @@ export default class ButtonClose extends React.Component {
 
   onMaximize = () => {
     const windowHandle = remote.getCurrentWindow()
-    this.props.maximized ? windowHandle.handle.maximize() : windowHandle.handle.unmaximize();
+    this.props.maximized ? windowHandle.unmaximize() : windowHandle.maximize();
   };
 
   render() {

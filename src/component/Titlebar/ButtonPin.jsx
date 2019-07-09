@@ -10,7 +10,7 @@ export default class ButtonClose extends React.Component {
     pinned: PropTypes.bool.isRequired
   };
 
-  onClose = () => {
+  onPin = () => {
     const windowHandle = remote.getCurrentWindow()
     windowHandle.setAlwaysOnTop(!this.props.pinned);
   };

@@ -1,4 +1,5 @@
 const remote = require("electron").remote;
+const { ipcRenderer } = require("electron");
 
 import React from "react";
 import { observable } from "mobx";
@@ -17,6 +18,7 @@ export default class Titlebar extends React.Component {
 
   @observable windowData = {
     handle: null,
+    active: true,
     maximized: false,
     pinned: false
   };
@@ -26,11 +28,16 @@ export default class Titlebar extends React.Component {
     this.windowData.handle = remote.getCurrentWindow();
     this.windowData.maximized = this.windowData.handle.isMaximized();
     this.windowData.pinned = this.windowData.handle.isAlwaysOnTop();
+
+    let windowData = this.windowData;
+    ipcRenderer.on("windowActive", (event, result) => windowData.active = result);
+    ipcRenderer.on("windowMaximize", (event, result) => windowData.maximized = !!result);
+    ipcRenderer.on("windowAlwaysOnTop", (event, result) => windowData.pinned = !!result);
   }
 
   render() {
     return (
-      <div id={"app-titlebar"}>
+      <div id={"app-titlebar"} className={(this.windowData.active ? 'active' : 'inactive')}>
         <div id={"app-icon"} />
         <div id={"app-title"}>RSS Feeder</div>
         <ButtonOptions />

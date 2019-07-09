@@ -59,6 +59,7 @@ class window {
       }
     });
 
+    // After loading/reloading start first feed run
     this.windowHnd.webContents.on('did-finish-load', () => this.runFeeder());
 
     // Close app after closing window
@@ -68,13 +69,21 @@ class window {
 
     // Handle option save on closing
     this.windowHnd.on("close", () => {
-      this.options.window.position.top = this.windowHnd.getPosition()[0];
-      this.options.window.position.left = this.windowHnd.getPosition()[1];
-      this.options.window.size.width = this.windowHnd.getSize()[0];
-      this.options.window.size.height = this.windowHnd.getSize()[1];
       this.options.window.pinned = this.windowHnd.isAlwaysOnTop();
       this.options.window.maximized = this.windowHnd.isMaximized();
+      if (!this.options.window.maximized) {
+        this.options.window.position.top = this.windowHnd.getPosition()[0];
+        this.options.window.position.left = this.windowHnd.getPosition()[1];
+        this.options.window.size.width = this.windowHnd.getSize()[0];
+        this.options.window.size.height = this.windowHnd.getSize()[1];
+      }
     });
+
+    this.windowHnd.on("focus", () => this.windowHnd.webContents.send('windowActive', true));
+    this.windowHnd.on("blur", () => this.windowHnd.webContents.send('windowActive', false));
+    this.windowHnd.on("maximize", () => this.windowHnd.webContents.send('windowMaximize', true));
+    this.windowHnd.on("unmaximize", () => this.windowHnd.webContents.send('windowMaximize', false));
+    this.windowHnd.on("always-on-top-changed", (e, value) => this.windowHnd.webContents.send('windowAlwaysOnTop', !value));
   }
 
   runFeeder = () => {
