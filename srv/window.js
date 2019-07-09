@@ -15,6 +15,7 @@ class window {
 
     this.options = OPTIONS;
     this.devMode = DEV;
+    this.feedInterval = null;
 
     this.windowHnd = new BrowserWindow({
       title: 'RSS Feeder',
@@ -35,13 +36,24 @@ class window {
   }
 
   /**
-   * Load content stream to window
+   * Load content stream to window adn start feeder
    */
   loadContent = () => {
     if (this.devMode && process.argv.indexOf("--noDevServer") === -1) {
       this.windowHnd.loadURL(url.format({ protocol: "http:", host: "localhost:8080", pathname: "index.html", slashes: true }));
     } else {
       this.windowHnd.loadURL(url.format({ protocol: "file:", pathname: path.join(__dirname, "dist", "index.html"), slashes: true }));
+    }
+    this.checkFeedInterval();
+  }
+
+  checkFeedInterval = () => {
+    clearInterval(this.feedInterval);
+
+    if (this.options.feed.auto) {
+      this.feedInterval = setInterval(() => this.runFeeder(), this.options.feed.time);
+    } else {
+      this.runFeeder()
     }
   }
 

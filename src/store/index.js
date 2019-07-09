@@ -42,6 +42,7 @@ export class Store {
 
   @action getFeeds(feeds) {
     if (!feeds || !feeds.length) return;
+    this.feeds.splice(0, this.feeds.length);
 
     for (let i = 0; i < feeds.length; ++i) {
       for (let j = 0; j < feeds[i].items.length; ++j) {

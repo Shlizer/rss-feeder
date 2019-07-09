@@ -13,7 +13,11 @@ const optionsDefault = {
     pinned: false,
     maximized: false
   },
-  sources: []
+  sources: [],
+  feed: {
+    auto: true,
+    time: 5000
+  }
 };
 
 const getOptions = () => {
