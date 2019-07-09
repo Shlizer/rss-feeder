@@ -1,9 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Context } from "../../store";
 import { computed } from "mobx";
+import { Context } from "store";
 import FeedElement from "./FeedElement";
-import "./css/list.scss";
+import "scss/FeedList/list.scss";
 
 @observer
 export default class FeedList extends React.Component {

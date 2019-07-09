@@ -41,7 +41,12 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".js", ".jsx"],
+    alias: {
+      scss: path.resolve(__dirname, "src/scss/"),
+      component: path.resolve(__dirname, "src/component/"),
+      store: path.resolve(__dirname, "src/store/index.js")
+    }
   },
   target: "electron-renderer",
   plugins: [

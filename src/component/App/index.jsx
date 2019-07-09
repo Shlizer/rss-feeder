@@ -1,10 +1,10 @@
 import React from "react";
-import { Context, Store } from "../store";
-import FeedList from "./feedList";
-import Options from "./options";
+import { Context, Store } from "store";
+import FeedList from "component/FeedList";
+import Options from "component/Options";
 
-import "./reset.scss";
-import "./app.scss";
+import "scss/reset.scss";
+import "scss/App/index.scss";
 
 class App extends React.Component {
   constructor(props) {

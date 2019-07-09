@@ -1,10 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
-import { Context } from "../../store";
-
-import "./css/element.scss";
 import { computed } from "mobx";
+import PropTypes from "prop-types";
+import { Context } from "store";
+
+import "scss/FeedList/element.scss";
 
 @observer
 export default class FeedElement extends React.Component {
