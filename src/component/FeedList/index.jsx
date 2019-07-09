@@ -10,7 +10,6 @@ export default class FeedList extends React.Component {
   static contextType = Context;
 
   @computed get list() {
-    console.log(this.context.elements);
     return this.context.elements.map(feed => {
       return (
         <FeedElement
