@@ -1,6 +1,18 @@
 const fs = require("fs");
 
 const optionsDefault = {
+  window: {
+    position: {
+      top: 0,
+      left: 0
+    },
+    size: {
+      width: 800,
+      height: 600
+    },
+    pinned: false,
+    maximized: false
+  },
   sources: []
 };
 
