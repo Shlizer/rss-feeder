@@ -4,14 +4,22 @@ import { observable, computed, action } from "mobx";
 const { ipcRenderer } = require("electron");
 
 export class Store {
+  @observable opened = false;
   @observable _options = { current: {} };
   @observable feeds = [];
 
   constructor() {
     this.initOptions();
     this.initFeedCatcher();
-    this.initFeeder();
     this.initErrorCatcher();
+  }
+
+  toggle() {
+    this.opened = !this.opened;
+  }
+
+  @computed get isOpened() {
+    return this.opened;
   }
 
   /**
@@ -29,28 +37,29 @@ export class Store {
    * Init node feeder catcher
    */
   initFeedCatcher() {
-    ipcRenderer.on("feedData", (event, result) => this.getFeed(result));
+    ipcRenderer.on("newFeeds", (event, result) => this.getFeeds(result));
   }
 
-  @action getFeed(result) {
-    for (let f in result.items) {
-      let feed = result.items[f];
-      this.feeds.push({
-        category: result.title,
-        icon: result.icon || null,
-        title: feed.title,
-        date: feed.isoDate || feed.pubDate,
-        link: feed.link,
-        content: feed.content
-      });
+  @action getFeeds(feeds) {
+    if (!feeds || !feeds.length) return;
+
+    for (let i = 0; i < feeds.length; ++i) {
+      for (let j = 0; j < feeds[i].items.length; ++j) {
+        if (feeds[i].items[j])
+          this.getFeed(feeds[i].title, feeds[i].icon || null, feeds[i].items[j]);
+      }
     }
   }
 
-  /**
-   * Init node feeder
-   */
-  initFeeder() {
-    ipcRenderer.send("initFeeder", this.options.sources || []);
+  @action getFeed(category, icon, feed) {
+    this.feeds.push({
+      category: category,
+      icon: icon,
+      title: feed.title,
+      date: feed.isoDate || feed.pubDate,
+      link: feed.link,
+      content: feed.content
+    });
   }
 
   /**

@@ -30,9 +30,10 @@
       height: 15px;
       padding: 2px 8px;
       color: rgba(255,255,255,0.1);
+      transition: all ease-in-out 0.2s;
 
       &:hover {
-        color:rgba(255,255,255,0.2);
+        color:rgba(255,255,255,0.6);
       }
     }
 
@@ -42,6 +43,12 @@
 
     #app-button-pin.pinned {
       transform: rotate(45deg);
+    }
+
+    #app-button-close {
+      &:hover {
+        color:rgba(255,0,0,0.6);
+      }
     }
   }
 }

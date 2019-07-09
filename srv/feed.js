@@ -1,21 +1,19 @@
 let Parser = require("rss-parser");
 let parser = new Parser();
 
-const parseUrl = (url, event) => {
-  (async () => {
-    try {
-      let feed = await parser.parseURL(url);
-      event.reply("feedData", {
+const parseUrl = (url) => {
+  return new Promise((resolve, reject) => {
+    parser.parseURL(url).then(feed => {
+      resolve({
         title: feed.title,
         items: feed.items,
         icon: feed.image,
         feed: feed
       });
-    } catch (error) {
-      console.error("Error in fetching the website");
-      event.reply("error", "Error in fetching the website");
-    }
-  })();
+    }).catch(error => {
+      throw "Error in fetching data: " + error;
+    });
+  })
 };
 
 module.exports = { parseUrl };

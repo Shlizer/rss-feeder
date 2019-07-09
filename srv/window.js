@@ -1,67 +1,100 @@
 const url = require("url");
 const { BrowserWindow, Menu } = require("electron");
+const { parseUrl } = require("./feed");
 
-const createWindow = (OPTIONS, devMode) => {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    title: 'RSS Feeder',
-    width: OPTIONS.window.size.width,
-    height: OPTIONS.window.size.height,
-    minWidth: 300,
-    minHeight: 40,
-    alwaysOnTop: OPTIONS.window.pinned,
-    frame: false,
-    show: false,
-    webPreferences: {
-      nodeIntegration: true
-    }
-  });
-  mainWindow.setPosition(OPTIONS.window.position.top, OPTIONS.window.position.left);
+class window {
+  windowHnd = null;
+  options = {};
+  devMode = false;
 
-  // and load the index.html of the app.
-  let indexPath;
+  /**
+   * Create app window
+   */
+  create = (OPTIONS, DEV) => {
+    if (this.windowHnd) return this.windowHnd;
 
-  if (devMode && process.argv.indexOf("--noDevServer") === -1) {
-    indexPath = url.format({
-      protocol: "http:",
-      host: "localhost:8080",
-      pathname: "index.html",
-      slashes: true
+    this.options = OPTIONS;
+    this.devMode = DEV;
+
+    this.windowHnd = new BrowserWindow({
+      title: 'RSS Feeder',
+      width: this.options.window.size.width,
+      height: this.options.window.size.height,
+      minWidth: 300,
+      minHeight: 40,
+      alwaysOnTop: this.options.window.pinned,
+      frame: false,
+      show: false,
+      webPreferences: {
+        nodeIntegration: true
+      }
     });
-  } else {
-    indexPath = url.format({
-      protocol: "file:",
-      pathname: path.join(__dirname, "dist", "index.html"),
-      slashes: true
+    this.windowHnd.setPosition(this.options.window.position.top, this.options.window.position.left);
+    this.loadContent();
+    this.setListeners();
+  }
+
+  /**
+   * Load content stream to window
+   */
+  loadContent = () => {
+    if (this.devMode && process.argv.indexOf("--noDevServer") === -1) {
+      this.windowHnd.loadURL(url.format({ protocol: "http:", host: "localhost:8080", pathname: "index.html", slashes: true }));
+    } else {
+      this.windowHnd.loadURL(url.format({ protocol: "file:", pathname: path.join(__dirname, "dist", "index.html"), slashes: true }));
+    }
+  }
+
+  /**
+   * Set all listeners on window
+   */
+  setListeners = () => {
+    // Show window after it's ready
+    this.windowHnd.once("ready-to-show", () => {
+      this.windowHnd.setMenu(Menu.buildFromTemplate([]));
+      this.windowHnd.setTitle('RSS Feeder');
+      this.windowHnd.show();
+      if (this.devMode) { // Open the DevTools automatically if developing
+        this.windowHnd.webContents.openDevTools();
+      }
+    });
+
+    this.windowHnd.webContents.on('did-finish-load', () => this.runFeeder());
+
+    // Close app after closing window
+    this.windowHnd.on("closed", () => {
+      this.windowHnd = null;
+    });
+
+    // Handle option save on closing
+    this.windowHnd.on("close", () => {
+      this.options.window.position.top = this.windowHnd.getPosition()[0];
+      this.options.window.position.left = this.windowHnd.getPosition()[1];
+      this.options.window.size.width = this.windowHnd.getSize()[0];
+      this.options.window.size.height = this.windowHnd.getSize()[1];
+      this.options.window.pinned = this.windowHnd.isAlwaysOnTop();
+      this.options.window.maximized = this.windowHnd.isMaximized();
     });
   }
 
-  mainWindow.loadURL(indexPath);
+  runFeeder = () => {
+    let promises = [];
 
-  // Don't show until we are ready and loaded
-  mainWindow.once("ready-to-show", () => {
-    mainWindow.setMenu(Menu.buildFromTemplate([]));
-    mainWindow.setTitle('RSS Feeder');
-    mainWindow.show();
-
-    // Open the DevTools automatically if developing
-    if (devMode) {
-      mainWindow.webContents.openDevTools();
+    for (let i = 0; i < this.options.sources.length; ++i) {
+      promises.push(parseUrl(this.options.sources[i]));
     }
-  });
 
-  mainWindow.on("closed", function () {
-    mainWindow = null;
-  });
+    Promise.all(promises).then(feeds => {
+      this.windowHnd.webContents.send('newFeeds', feeds);
+    })
+  }
 
-  mainWindow.on("close", function () {
-    OPTIONS.window.position.top = mainWindow.getPosition()[0];
-    OPTIONS.window.position.left = mainWindow.getPosition()[1];
-    OPTIONS.window.size.width = mainWindow.getSize()[0];
-    OPTIONS.window.size.height = mainWindow.getSize()[1];
-    OPTIONS.window.pinned = mainWindow.isAlwaysOnTop();
-    OPTIONS.window.maximized = mainWindow.isMaximized();
-  });
-};
+  /**
+   * Get window handler
+   */
+  getWindow = () => {
+    return this.windowHnd;
+  }
+}
 
-module.exports = { createWindow };
+module.exports = { window };
