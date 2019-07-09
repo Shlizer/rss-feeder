@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const optionsDefault = {
-  sources: ["https://feeds.feedburner.com/niebezpiecznik/"]
+  sources: []
 };
 
 const getOptions = () => {
