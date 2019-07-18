@@ -1,34 +1,43 @@
 body {
-  font-family: sans-serif;
-  background-color: #262626;
-  color: #777777;
-  user-select: none;
+    font-family: sans-serif;
+    background-color: #262626;
+    color: #777777;
+    user-select: none;
 
-  #app {
-    position: absolute;
-    top:0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-  
-    #app-content {
-      flex-grow: 1;
-      overflow: auto;
+    #root {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 1px solid #6c6c6c;
 
-      &::-webkit-scrollbar {
-        width: 14px;
-        height: 14px;
-      }
+        #app {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
 
-      &::-webkit-scrollbar-thumb {
-        background: rgb(108, 108, 108);
-      }
+            #app-content {
+                flex-grow: 1;
+                overflow: auto;
 
-      &::-webkit-scrollbar-track {
-        background: #262626;
-      }
+                &::-webkit-scrollbar {
+                    width: 14px;
+                    height: 14px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: #6c6c6c;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: #262626;
+                }
+            }
+        }
     }
-  }
 }
