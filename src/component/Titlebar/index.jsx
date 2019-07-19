@@ -4,7 +4,6 @@ const { ipcRenderer } = require("electron");
 import React from "react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
-import { Context } from "store";
 import ButtonClose from "./ButtonClose";
 import ButtonMaximize from "./ButtonMaximize";
 import ButtonMinimize from "./ButtonMinimize";
@@ -14,8 +13,6 @@ import "scss/Titlebar/titlebar.scss";
 
 @observer
 export default class Titlebar extends React.Component {
-  static contextType = Context;
-
   @observable windowData = {
     handle: null,
     active: true,

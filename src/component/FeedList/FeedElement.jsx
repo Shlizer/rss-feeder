@@ -2,13 +2,11 @@ import React from "react";
 import { observer } from "mobx-react";
 import { computed } from "mobx";
 import PropTypes from "prop-types";
-import { Context } from "store";
 
 import "scss/FeedList/element.scss";
 
 @observer
 export default class FeedElement extends React.Component {
-  static contextType = Context;
   static propTypes = {
     title: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
@@ -17,11 +15,7 @@ export default class FeedElement extends React.Component {
   };
 
   @computed get icon() {
-    return this.props.icon ? (
-      <img src={this.props.icon} className={"icon"} />
-    ) : (
-      <span className={"icon empty"} />
-    );
+    return this.props.icon ? <img src={this.props.icon} className={"icon"} /> : <span className={"icon empty"} />;
   }
 
   @computed get date() {

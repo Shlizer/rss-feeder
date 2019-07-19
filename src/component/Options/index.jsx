@@ -12,7 +12,7 @@ export default class Options extends React.Component {
       <div className={'sources-options'}>
         <div>Źródła RSS:</div>
         {this.context.options.sources.map((source) => {
-          return <div id={source}><input type='text' value={source} /></div>
+          return <div key={source}><input type='text' defaultValue={source} /></div>
         })}
       </div>
       <div className={'refresh-options'}>
