@@ -1,6 +1,7 @@
 const url = require("url");
 const { BrowserWindow, Menu } = require("electron");
 const { parseUrl } = require("./feed");
+const {handleException} = require("./error");
 
 class window {
   windowHnd = null;
@@ -104,9 +105,13 @@ class window {
     for (let i = 0; i < this.options.sources.length; ++i) {
       promises.push(parseUrl(this.options.sources[i]));
     }
-
-    Promise.all(promises).then(feeds => {
-      this.windowHnd.webContents.send('newFeeds', feeds);
+    
+    Promise.all(promises).then(results => {
+      this.windowHnd.webContents.send('newFeeds', results
+        .filter(result => result.status==='resolved' && result.data)
+        .map(result => result.data));
+    }).catch(error=> {
+      handleException(error,'feedError',null,this.getWindow());
     })
   }
 

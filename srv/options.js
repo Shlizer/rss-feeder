@@ -2,6 +2,7 @@ const fs = require("fs");
 const { errorDefaultPath, handleException } = require("./error");
 
 const optionsDefault = {
+  lang: "en",
   window: {
     position: {
       top: 0,
@@ -18,7 +19,7 @@ const optionsDefault = {
   sources: [],
   feed: {
     auto: true,
-    time: 5000
+    time: 15000
   }
 };
 

@@ -5,8 +5,12 @@ import { observable, computed, action } from "mobx";
 
 export class Store {
   @observable opened = false;
-  @observable _options = { current: {} };
+  @observable _options = {
+    current: {},
+    lastFeedTime: null
+  };
   @observable feeds = [];
+
 
   constructor() {
     this.initOptions();
@@ -33,6 +37,10 @@ export class Store {
     return this._options.current || {};
   }
 
+  @computed get lastFeedTime() {
+    return this._options.lastFeedTime || null;
+  }
+
   /**
    * Init node feeder catcher
    */
@@ -50,6 +58,8 @@ export class Store {
           this.getFeed(feeds[i].title, feeds[i].icon || null, feeds[i].items[j]);
       }
     }
+
+    this._options.lastFeedTime = new Date();
   }
 
   @action getFeed(category, icon, feed) {

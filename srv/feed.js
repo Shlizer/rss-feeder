@@ -3,15 +3,19 @@ let parser = new Parser();
 
 const parseUrl = (url) => {
   return new Promise((resolve, reject) => {
-    parser.parseURL(url).then(feed => {
+    return parser.parseURL(url).then(feed => {
       resolve({
-        title: feed.title,
-        items: feed.items,
-        icon: feed.image,
-        feed: feed
+        status:'resolved',
+        data: 
+          {
+          title: feed.title,
+          items: feed.items,
+          icon: feed.image,
+          feed: feed
+        }
       });
     }).catch(error => {
-      throw "Error in fetching data: " + error;
+      resolve({status:'rejected', url: url});
     });
   })
 };
