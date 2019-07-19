@@ -67,8 +67,8 @@ export class Store {
    * Node error catcher
    */
   initErrorCatcher() {
-    ipcRenderer.on("error", (event, errorMsg) => {
-      console.error("Main process error: ", errorMsg);
+    ipcRenderer.on("error", (event, errorData) => {
+      console.error(`Main process error of type ${errorData.type}: \n`, errorData.message);
     });
   }
 

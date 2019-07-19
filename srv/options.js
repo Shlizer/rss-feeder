@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { errorDefaultPath, handleException } = require("./error");
 
 const optionsDefault = {
   window: {
@@ -13,6 +14,7 @@ const optionsDefault = {
     pinned: false,
     maximized: false
   },
+  logDir: errorDefaultPath,
   sources: [],
   feed: {
     auto: true,
@@ -20,21 +22,20 @@ const optionsDefault = {
   }
 };
 
-const getOptions = () => {
+const getOptions = (wndHandle) => {
   try {
-    let rawData = fs.readFileSync("conf.json");
-    return Object.assign({}, optionsDefault, JSON.parse(rawData));
+    return Object.assign({}, optionsDefault, JSON.parse(fs.readFileSync("conf.json")));
   } catch (error) {
+    handleException(error, 'optionsLoad', errorDefaultPath, wndHandle);
     setOptions(optionsDefault);
   }
 };
 
-const setOptions = data => {
+const setOptions = (data, wndHandle) => {
   try {
     fs.writeFileSync("conf.json", JSON.stringify(Object.assign({}, optionsDefault, data)));
   } catch (error) {
-    console.error("Error while saving options data");
-    event.reply("error", "Error while saving options data");
+    handleException(error, 'optionsSave', errorDefaultPath, wndHandle);
   }
 };
 
