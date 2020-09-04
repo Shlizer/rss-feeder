@@ -59,7 +59,7 @@
     "babel-loader": "^8.0.2",
     "babili-webpack-plugin": "^0.1.2",
     "css-loader": "^1.0.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "style-loader": "^0.23.1",
     "sass-loader": "^7.1.0",
     "electron-packager": "^12.1.1",
