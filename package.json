@@ -71,7 +71,7 @@
     "webpack-dev-server": "^3.1.7"
   },
   "dependencies": {
-    "electron": "5.0.6",
+    "electron": "15.5.5",
     "mobx": "5.11.0",
     "mobx-react": "6.1.1",
     "react": "16.8.6",
